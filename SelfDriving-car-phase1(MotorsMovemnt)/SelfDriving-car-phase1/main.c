@@ -21,6 +21,9 @@ int main(void)
 // 			Move_Car(i,50);
 // 			_delay_ms(1000);
 // 		}
-		Move_Car(3,50);
+		Move_Car(0,50);
+		_delay_ms(3000);
+		Move_Car(1,50);
+		_delay_ms(3000);
     }
 }
