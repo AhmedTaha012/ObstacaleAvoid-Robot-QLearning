@@ -9,8 +9,8 @@
 #define Motor_Right_Low 1
 #define Motor_Left_High 2
 #define Motor_Left_Low 3
-#define Move_port_ddr DDRD //change output port of motor control here 
-#define Move_port PORTD
+#define Move_port_ddr DDRB //change output port of motor control here 
+#define Move_port PORTB
 uint8_t outputs[]={0x05,0x0A,0x09,0x06,0x00}; //forward,backward,right,left,off 
 		//pins p3 p2 p1 p0
 		//0000 0  1  0  1 forward
@@ -41,10 +41,8 @@ void Move_Intilaization(){
 
 void Move_Car(uint8_t Direction,uint8_t Speed_precentage){
 	uint8_t x = Move_port & (0xf0);
-	Move_port= x | outputs[Direction];
-	// direction = 1 , percentage = 50;
-	                         
-	
+	Move_port=outputs[Direction];
+                        
 	if(Direction==0 || Direction==1){
 		Pwm_Generation_Right(Speed_precentage);
 		Pwm_Generation_Left(Speed_precentage);

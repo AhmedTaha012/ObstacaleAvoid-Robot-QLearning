@@ -7,23 +7,17 @@
 
 #include <util/delay.h>
 #include "Motors_Control.h"
-
 int main(void)
 {
-    
-    Pwm_Generation_Left_Intilaization();
-    Pwm_Generation_Right_Intilaization();
-    Move_Intilaization();
+    DDRB=0xff;
+    //Pwm_Generation_Left_Intilaization();
+    //Pwm_Generation_Right_Intilaization();
+    //Move_Intilaization();
     while (1) 
     {
-// 		for(int i=0;i<5;i++)
-// 		{
-// 			Move_Car(i,50);
-// 			_delay_ms(1000);
-// 		}
-		Move_Car(0,50);
+		PORTB=0x05; //move forward 
 		_delay_ms(3000);
-		Move_Car(1,50);
+		PORTB=0x0A; // move backward
 		_delay_ms(3000);
     }
 }
