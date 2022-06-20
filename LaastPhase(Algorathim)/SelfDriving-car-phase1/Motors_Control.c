@@ -5,6 +5,7 @@
  *  Author: DELL
  */ 
 #include "Motors_Control.h"
+#include <util/delay.h>
 #define Motor_Right_High 0
 #define Motor_Right_Low 1
 #define Motor_Left_High 2
@@ -41,8 +42,10 @@ void Move_Intilaization(){
 
 void Move_Car(uint8_t Direction,uint8_t Speed_precentage){
 	uint8_t x = Move_port & (0xf0);
-	Move_port=x|outputs[Direction];
-                        
+	Move_port= x | outputs[Direction];
+	// direction = 1 , percentage = 50;
+	                         
+	
 	if(Direction==0 || Direction==1){
 		Pwm_Generation_Right(Speed_precentage);
 		Pwm_Generation_Left(Speed_precentage);
@@ -60,4 +63,29 @@ void Move_Car(uint8_t Direction,uint8_t Speed_precentage){
 	else{Pwm_Generation_Right(0);
 		Pwm_Generation_Left(0);}
 	
+}
+
+void Move_Right(){
+	Move_Car(2,55);
+	_delay_ms(2000);
+	Move_Car(4,0);	
+}
+void Move_Left(){
+	Move_Car(3,55);
+	_delay_ms(2000);
+	Move_Car(4,0);
+}
+void Move_Forward(){
+	Move_Car(0,55);
+	_delay_ms(2000);
+	Move_Car(4,0);
+}
+void Move_Backward(){
+	Move_Car(1,55);
+	_delay_ms(2000);
+	Move_Car(4,0);
+}
+void Stop()
+{
+   Move_Car(4,0);
 }
