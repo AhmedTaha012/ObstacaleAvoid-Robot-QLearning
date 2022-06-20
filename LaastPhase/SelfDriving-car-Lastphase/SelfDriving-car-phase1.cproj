@@ -120,6 +120,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Adc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Adc.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
@@ -127,6 +133,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Motors_Control.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Uart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Uart.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="UltraSonic.c">

@@ -1,4 +1,4 @@
-main.d main.o: .././main.c \
+Uart.d Uart.o: .././Uart.c .././Uart.h \
  f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -10,16 +10,9 @@ main.d main.o: .././main.c \
  f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h \
- .././Motors_Control.h \
- f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
- f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
- f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- .././UltraSonic.h \
- f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
- f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h \
- f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
- f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h
+ f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h
+
+.././Uart.h:
 
 f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -44,21 +37,3 @@ f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h:
 f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
 f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h:
-
-.././Motors_Control.h:
-
-f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
-
-f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
-
-f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
-
-.././UltraSonic.h:
-
-f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
-
-f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h:
-
-f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h:
-
-f:\atmelstudion\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h:

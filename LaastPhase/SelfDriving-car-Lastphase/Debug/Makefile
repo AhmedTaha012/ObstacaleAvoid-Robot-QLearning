@@ -37,8 +37,10 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../Adc.c \
 ../main.c \
 ../Motors_Control.c \
+../Uart.c \
 ../UltraSonic.c
 
 
@@ -49,23 +51,31 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+Adc.o \
 main.o \
 Motors_Control.o \
+Uart.o \
 UltraSonic.o
 
 OBJS_AS_ARGS +=  \
+Adc.o \
 main.o \
 Motors_Control.o \
+Uart.o \
 UltraSonic.o
 
 C_DEPS +=  \
+Adc.d \
 main.d \
 Motors_Control.d \
+Uart.d \
 UltraSonic.d
 
 C_DEPS_AS_ARGS +=  \
+Adc.d \
 main.d \
 Motors_Control.d \
+Uart.d \
 UltraSonic.d
 
 OUTPUT_FILE_PATH +=SelfDriving-car-phase1.elf
@@ -82,6 +92,13 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+./Adc.o: .././Adc.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)F:\AtmelStudion\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"F:\AtmelStudion\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "F:\AtmelStudion\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./main.o: .././main.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -90,6 +107,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./Motors_Control.o: .././Motors_Control.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)F:\AtmelStudion\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"F:\AtmelStudion\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "F:\AtmelStudion\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./Uart.o: .././Uart.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)F:\AtmelStudion\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"F:\AtmelStudion\7.0\Packs\atmel\ATmega_DFP\1.6.364\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "F:\AtmelStudion\7.0\Packs\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

@@ -3,7 +3,7 @@
  * Q-Learning_Algo.c
  *
  * Created: 6/18/2022 1:23:16 AM
- * Author : DELL
+ * Author : Ahmed Taha,Ahmed Samer,Noura Medhat,Pavly Safwat,Salma Mohamed
  */ 
 
 #include <avr/io.h>
@@ -12,22 +12,8 @@
 #include <util/delay.h>
 #include "Motors_Control.h"
 #include "UltraSonic.h"
-uint8_t distance_str_1[20];
-uint8_t distance_str_2[20];
-#define BAUD 9600
-#define BRC ((F_CPU/16/BAUD)-1)
-void Serial_monitor_int()
-{
-	UBRR0H=(BRC>>8);
-	UBRR0L=BRC;
-	UCSR0B=(1<<TXEN0);
-	UCSR0C=(1<<UCSZ01)|(1<<UCSZ00);
-
-}
-void Serial_print(uint8_t value){
-	UDR0=value;
-}
-
+#include "Uart.h"
+#include "Adc.h"
 
 //Initialize the variables 
 #define number_states 4          //  number_states
@@ -41,6 +27,8 @@ int Next_state;             //    Next_State
 int action_taken;         //     value to store action taken
 int actions[3]={0,1,2}; //0=forward 1=left 2=right 3=Stop  
 uint8_t distance_str_1[20];
+uint8_t distance_str_2[20];
+
 float Q_Matrix[number_states][number_of_action]={{0.0,0.0,0.0}, //00  empty 00,f 
  	                                              {0.0,0.0,0.0}, //01  // obstacle on right
 											      {0.0,0.0,0.0},  //10  // obstacle on left 
@@ -52,18 +40,21 @@ float Reward_Martix[number_states][number_of_action]={
 	                                                  {10.0,-2.0,-3.0},   //00 empty 
 												      {-2.0,10.0,-10.0},  //01 on right Purple sees
 													  {-2.0,-10.0,10.0},  //10 on left  Brown sees
-													  {-10.0,1.0,10.0}  //11 both 
+													  {-10.0,1.0,10.0}   //11 both 
 													    
 													  };
 
-float MAXIMUM(int Next_state);
-void seed_init();
+
 
 
 // functions declaration 
+float MAXIMUM(int Next_state);
+void seed_init();
+
 void update_epsilon(){
 	epsilon=0.98*epsilon;
 }
+
 bool Explore_Exploit(){      //returns 1 if explore, 0 if exploit
 	double randomno=rand()%100;
 	if(randomno/100<epsilon){
@@ -72,10 +63,12 @@ bool Explore_Exploit(){      //returns 1 if explore, 0 if exploit
 	else{return false;
 	}
 }  
+
 int rand_Action(){
 	int random_num=rand()%3;//0 1 2 3 4
 	return random_num;
 } 
+
 int sensor_reading(){
 	return get_states_of_ultrasonic();
 }
@@ -120,87 +113,6 @@ float MAX_Action_InState(int state){
 	return index; // the highest in this state (Next state)
 	
 }
-void adc_init(void){
-	ADCSRA |= ((1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0));   // 16Mhz/128 = 125Khz the ADC reference clock
-	ADMUX |= (1<<REFS0);                            // Voltage reference from Avcc (5v)
-	ADCSRA |= (1<<ADEN);                            // Turn on ADC
-	ADCSRA |= (1<<ADSC);                            // Do an initial conversion because this one is the slowest and to ensure that everything is up and running
-}
-uint16_t read_adc(uint8_t channel){
-	ADMUX &= 0xF0;                            // Clear the older channel that was read
-	ADMUX |= channel;                            // Defines the new ADC channel to be read
-	ADCSRA |= (1<<ADSC);                            // Starts a new conversion
-	while(ADCSRA & (1<<ADSC));                        // Wait until the conversion is done
-	return ADCW;                                // Returns the ADC value of the chosen channel
-}
-void seed_init()
-{
-	uint16_t u_rand_val = 0;
-	uint16_t u_seed_rand_val = 0;
-	adc_init();
-	//Note we're assuming the channel that you are reading from is FLOATING or hooked up to something very noisy.
-	//Gather bits from the adc, pushing them into your pseudorandom seed.
-	for(uint8_t i=0; i<16; i++){
-		u_seed_rand_val = u_seed_rand_val<<1 | (read_adc(i)&0b1);
-	}
-	srand (u_seed_rand_val);
-
-}
-
-void prints_float(double value,int size )
-{   sprintf(distance_str_1, "%f", value);
-	for (int i=0;i<size;i++)
-	{
-		Serial_print(distance_str_1[i]);
-		_delay_ms(20);
-	}
-	Serial_print(' ');
-}
-char str[5]="ahmed";
-void prints_int(int value,int size )
-{   sprintf(distance_str_1, "%d", value);
-	for (int i=0;i<size;i++)
-	{
-	Serial_print(distance_str_1[i]);
-	_delay_ms(20);
-	}
-	//Serial_print('\n');
-}
-void prints_String(char value[],int size )
-{   
-	for (int i=0;i<size;i++)
-	{
-		Serial_print(value[i]);
-		_delay_ms(20);
-	}
-	
-}
-char integers[];
-char floats[];
-void double2string (double number, char integers[], char floats[]){
-	integers[3] = (  (int)number)%10;
-	integers[2] = ( ((int)number)%100 - ((int)number)%10 )/10;
-	integers[1] = ( ((int)number)%1000 - ((int)number)%100 )/100;
-    integers[0] = ( ((int)number)%10000 - ((int)number)%1000 )/1000;
-	number -= (int)number;
-	number = number* 10000;
-
-	floats[3] = (  (int)number)%10;
-	floats[2] = ( ((int)number)%100 - ((int)number)%10 )/10;
-	floats[1] = ( ((int)number)%1000 - ((int)number)%100 )/100;
-	floats[0] = ( ((int)number)%10000 - ((int)number)%1000 )/1000;
-	
-	for (int i=0;i<4;i++)
-	{
-		prints_int(integers[i],1);
-	}
-	prints_String(".",1);
-	for (int i=0;i<4;i++)
-	{
-		prints_int(floats[i],1);
-	}
-	
-}
 
 
 
@@ -208,21 +120,20 @@ void double2string (double number, char integers[], char floats[]){
 
 
 int main(void)
-{   DDRC=0xff;
-	Pwm_Generation_Left_Intilaization();
-	Pwm_Generation_Right_Intilaization();
-	ultrasonic_init_1();
-	ultrasonic_init_2();
-	Move_Intilaization();
-	Serial_monitor_int();
-	sei();
-	seed_init();
+{   
+	DDRC=0xff; // Make port Pin 0 in Portc output to connect buzzer to it (We use buzzer to now that robot is starts Testing) 
+	Pwm_Generation_Left_Intilaization();  //Initialize the PWM of left motor
+	Pwm_Generation_Right_Intilaization(); //Initialize the PWM of right motor 
+	ultrasonic_init_1(); // Initialize ultrasonic 1 
+	ultrasonic_init_2();// Initialize ultrasonic 2
+	Move_Intilaization();// Initialize the motors 
+	Serial_monitor_int(); // Initialize the serial monitor 
+	sei(); 
+	seed_init(); //Initialize 
 	int episode_count=100;
-
     while (1) 
     {  
-		 
-		 
+		  
 		 ///////////////////training/////////////////////////////////////////////
  		for(int episodes=0;episodes<episode_count;episodes++) 
  		{   
@@ -237,47 +148,49 @@ int main(void)
 			prints_int(state,1);
 			prints_String("\n",2);
 			//choose Explore or exploit and print the states
- 			if(Explore_Exploit()==true){
+ 			if(Explore_Exploit()==true){ //true Explore 
 				  prints_String("EXPLORE----------",17);
 				  prints_String("\n",2);
-				  action_taken=rand_Action();
+				  action_taken=rand_Action(); //Choosee Random Action 
 				  prints_String("ActionTaken=",12);
 				  prints_int(action_taken,1);
 				  prints_String("\n",2);
 				  }
-			 else { 
+			 else { //False Exploit
 				  prints_String("EXPLOIT----------",17);
 				  prints_String("\n",2);
-				  action_taken=MAX_Action_InState(state);
+				  action_taken=MAX_Action_InState(state); //Takes Max action In State
 				  prints_String("ActionTaken=",12);
 				  prints_int(action_taken,1);
 				  prints_String("\n",2);
 				   }
+			//Done Action until state changes 
              do{
-				  prints_String("INWHILE----------",17);
+				  prints_String("INDOWHILE----------",19);
 				  prints_String("\n",2);
-	              Action_Done(action_taken);
+	              Action_Done(action_taken);//Done Action until state changes 
 				prints_String("ActionTaken=",12);
 				prints_int(action_taken,1);
 				prints_String("\n",2);
              }while(sensor_reading()==state);
+			 //Update new Q ------------------------------------
 			 prints_String("OUTWHILE----------",18);
 			 prints_String("\n",2);
-             Action_Done(4);
+             Action_Done(3); // Stop car to can read the states
 			 prints_String("STOPPPPP----------",18);
 			 prints_String("\n",2);
-             Next_state=sensor_reading();// 11
+             Next_state=sensor_reading();// Read new state
 			 prints_String("NEWState=",9);
 			 prints_int(Next_state,1);
 			 prints_String("\n",2);
-             Reward_gain=Reward_Martix[state][action_taken];//00 f r=10
-             Update(state,Next_state,action_taken,Reward_gain,learning_rate,discount_factor);
-             update_epsilon();
+             Reward_gain=Reward_Martix[state][action_taken];//get reward gained of last action 
+             Update(state,Next_state,action_taken,Reward_gain,learning_rate,discount_factor);//update Q  
+             update_epsilon();//Update epsilon (Decay it)
 			 
  		}
+		//To show Q Values after training 
 		print_q();
 		Serial_print('\n');
-		
 		///////////////////testing/////////////////////////////////////////////
 	while(1){
 	     	Serial_print('\n');
@@ -294,6 +207,33 @@ int main(void)
 	}
 }
 
+///////////////////Print int value on Serial monitor/////////////////////////
+void prints_int(int value,int size )
+{   sprintf(distance_str_1, "%d", value);
+	for (int i=0;i<size;i++)
+	{
+		Serial_print(distance_str_1[i]);
+		_delay_ms(20);
+	}
+	//Serial_print('\n');
+}
+
+
+///////////////////Print String value on Serial monitor/////////////////////////
+void prints_String(char value[],int size )
+{
+	for (int i=0;i<size;i++)
+	{
+		Serial_print(value[i]);
+		_delay_ms(20);
+	}
+	
+}
+
+
+char integers[];
+char floats[];
+////////////////////////////////////Print Q matrix////////////////////////
 void print_q(){
 	PORTC=0x01; // for buzzer indication start 
 	_delay_ms(1000);
@@ -320,15 +260,7 @@ void print_q(){
 	}	
 	
 	
-	
-	
-	
-
-		
-
-	
-	
-	
+//////////////////Function to do choosen action//////////////////////////////////	
 void Action_Done(int action){
 	
 	if(action==0)
@@ -357,8 +289,32 @@ void Action_Done(int action){
 
 
 
+/////////////////////////////////Print double values on Serial monitor
 
+void double2string (double number, char integers[], char floats[]){
+	integers[3] = (  (int)number)%10;
+	integers[2] = ( ((int)number)%100 - ((int)number)%10 )/10;
+	integers[1] = ( ((int)number)%1000 - ((int)number)%100 )/100;
+	integers[0] = ( ((int)number)%10000 - ((int)number)%1000 )/1000;
+	number -= (int)number;
+	number = number* 10000;
 
+	floats[3] = (  (int)number)%10;
+	floats[2] = ( ((int)number)%100 - ((int)number)%10 )/10;
+	floats[1] = ( ((int)number)%1000 - ((int)number)%100 )/100;
+	floats[0] = ( ((int)number)%10000 - ((int)number)%1000 )/1000;
+	if (number<0){prints_String("-",1);}
+	for (int i=0;i<4;i++)
+	{
+		prints_int(integers[i],1);
+	}
+	prints_String(".",1);
+	for (int i=0;i<4;i++)
+	{
+		prints_int(floats[i],1);
+	}
+	
+}
 
 
 
