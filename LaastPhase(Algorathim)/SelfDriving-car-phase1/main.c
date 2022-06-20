@@ -1,59 +1,3 @@
-/*
- * SelfDriving-car-phase1.c
- *
- * Created: 6/10/2022 2:33:55 PM
- * Author : DELL
- */ 
-
-
-
-
-
-
-
-
-
-
-
-
-//int main(void)
-//{ 
-	//
-    //
-    //Pwm_Generation_Left_Intilaization();
-    //Pwm_Generation_Right_Intilaization();
-	//ultrasonic_init_1();
-    //ultrasonic_init_2();
-    //Move_Intilaization();
-	//Serial_monitor_int();
-	//sei();
-	//Move_Forward();
-    //Move_Forward();
-	//Move_Forward();
-	//Move_Left();
-    //
-    //while (1) 
-    //{ 
-	 //sprintf(distance_str_1, "%d", get_states_of_ultrasonic());
-	    //for(int i=0;i<2;i++)
-	    //{Serial_print(distance_str_1[i]);
-		   //_delay_ms(100);
-		    //Serial_print('\n');
-	    //}
-	//}
-	  //
-	 //
-	  //
-	  //
-	  //
-	  //
-    //
-//}
-
-
-
-
-
 
 /*
  * Q-Learning_Algo.c
@@ -304,7 +248,6 @@ int main(void)
 			 else { 
 				  prints_String("EXPLOIT----------",17);
 				  prints_String("\n",2);
-				  action_taken=rand_Action();
 				  action_taken=MAX_Action_InState(state);
 				  prints_String("ActionTaken=",12);
 				  prints_int(action_taken,1);
