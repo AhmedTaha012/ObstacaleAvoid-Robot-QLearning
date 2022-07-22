@@ -286,7 +286,7 @@ state. The readings of the sensors are converted to one of four values:\
 2 There is no obstacle on the left but there is a one on the right\
 3 There is an obstacle on the left and on the right\
 ### 2. Action-space:
-Here, we have 3 actions the robot can take:\
+Here, we have 4 actions the robot can take:\
 0 Forward\
 1 Left\
 2 Right\
