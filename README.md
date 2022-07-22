@@ -1,7 +1,7 @@
 # ObstacaleAvoid-Robot-QLearning
 <p> This Project is based on <b> avr atmega328p </b> and <b> q-learning algorthim </b> </p>
 
-The main purpose of this project is to make our robot avoid obstacles by detecting it using
+The main purpose of this project is to make our robot avoid obstacles by detecting them using
 ultrasonic sensor and also learn to take the optimal action in this situation. The learning
 process is based on q learning algorithm which will be discussed later in the algorithm
 explanation
@@ -280,7 +280,7 @@ In order to apply this algorithm, we need to determine 3 things:
 The states are the sensory information resulting from the robot’s space observation.
 Our robot is using ultrasonic sensors for the purpose of determining the obstacles
 around it. The robot uses both the right and the left sensors to determine the current
-state. The readings of the sensors are converted to one of five values:\
+state. The readings of the sensors are converted to one of four values:\
 0 No obstacles\
 1 There is no obstacle on the right but there is a one on the left\
 2 There is no obstacle on the left but there is a one on the right\
@@ -289,7 +289,8 @@ state. The readings of the sensors are converted to one of five values:\
 Here, we have 3 actions the robot can take:\
 0 Forward\
 1 Left\
-3 Right
+2 Right\
+3 Stop
 
 
 # The flowchart of the code:
@@ -299,7 +300,7 @@ The following flowchart represents how the code works\
 
 •	A certain number of episodes is determined – represents the number of the iterations. Then the robot will determine it is in the exploring phase or not. If the robot were in the exploring phase, the sensors readings will be sent to the robot to determine the current state of the robot and as the robot is in the exploring phase, it will take random action. Now and after taking a random action, the robot is in a new state. The reward will be calculated and the Q will be updated using and the number of the iterations will be decreased by one. This will be repeated till the end of the exploring phase.\
 
-•	If the robot was exploiting, the sensors readings’ will be sent to the robot to determine the current state of the robot, and take an action its goal which is to get the maximum reward based on what it learnt in the learning or exploring phase.
+•	If the robot was exploiting, the sensors readings’ will be sent to the robot to determine the current state of the robot, and take an action to achieve its goal which is to get the maximum reward based on what it has learnt in the learning or exploring phase.
 
 
 
